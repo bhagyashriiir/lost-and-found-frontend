@@ -1235,6 +1235,10 @@ function attachSignupEvents() {
   const goToLoginBtn = document.getElementById("goToLoginBtn");
   const socialBtns = document.querySelectorAll(".signupSocials .socialBtn");
 
+  function triggerGoogleLogin() {
+  google.accounts.id.prompt();
+}
+
  if (signupForm) {
   signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -1583,6 +1587,10 @@ function attachLoginEvents() {
   const goToSignupBtn = document.getElementById("goToSignupBtn");
   const forgotPasswordBtn = document.querySelector(".forgotPasswordBtn");
   const socialBtns = document.querySelectorAll(".loginSocials .socialBtn");
+
+  function triggerGoogleLogin() {
+  google.accounts.id.prompt();
+}
 
   if (loginForm) {
     loginForm.addEventListener("submit", async (e) => {
