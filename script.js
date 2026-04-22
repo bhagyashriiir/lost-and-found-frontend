@@ -1888,16 +1888,14 @@ function showDashboard() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function getImagePreviewSource(report) {
+function getImagePreviewSource(item) {
+  const BACKEND_URL = "https://lost-and-found-backend-rsuq.onrender.com";
 
-  // If image exists from backend
-  if (report && report.image) {
-    return BASE_URL + report.image;
+  if (item.image) {
+    return BACKEND_URL + item.image;
   }
 
-  // fallback image
   return "images/no-image.png";
-
 }
 
 function readImageFileAsDataUrl(file) {
