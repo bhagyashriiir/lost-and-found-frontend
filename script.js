@@ -1,18 +1,28 @@
-console.log("SCRIPT LOADED");
-
-window.API_BASE_URL =
+const API_BASE_URL =
   "https://lost-and-found-backend-rsuq.onrender.com/api";
 
-const API_BASE_URL =
-  window.API_BASE_URL;
-
-window.SOCKET_BASE_URL =
+const SOCKET_BASE_URL =
   "https://lost-and-found-backend-rsuq.onrender.com";
 
 console.log("SCRIPT LOADED");
 let socket = null;
 
 const GOOGLE_CLIENT_ID = "906197317156-6stev5ndltobit21mtl5qc1n8mua77sn.apps.googleusercontent.com";
+
+window.onload = function () {
+
+  if (window.google && google.accounts) {
+
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleCredentialResponse
+    });
+
+    console.log("Google initialized successfully");
+
+  }
+
+};
 
 function hideAllViews() {
   const views = [
@@ -42,15 +52,22 @@ function setActiveNav(view) {
 }
 
 function showHome() {
-
   hideAllViews();
 
   const home = document.getElementById("view-home");
+  if (!home) return;
 
-  if (home) {
-    home.style.display = "block";
-  }
+  home.style.display = "block";
 
+  setActiveNav("home");
+  updateNavAuthUI();
+
+  loadItems();
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 }
 
 const LOCATION_FILTER_OPTIONS = {
@@ -93,67 +110,6 @@ const LOCATION_FILTER_OPTIONS = {
     "Festival City",
     "Dubai Silicon Oasis"
   ]
-};
-
-window.loadItems = async function () {
-
-  console.log("loadItems running");
-
-  const itemsGrid =
-    document.getElementById("items-grid");
-
-  if (!itemsGrid) {
-    console.log("items-grid not found");
-    return;
-  }
-
-  try {
-
-    const response =
-      await fetch(
-        `${API_BASE_URL}/reports`
-      );
-
-    const reports =
-      await response.json();
-
-    console.log(
-      "Reports received:",
-      reports
-    );
-
-    if (!Array.isArray(reports) ||
-        reports.length === 0) {
-
-      itemsGrid.innerHTML =
-        "<p>No items found</p>";
-
-      return;
-
-    }
-
-    itemsGrid.innerHTML =
-      reports.map(item => `
-        <div class="item-card">
-          <h3>${item.itemName}</h3>
-          <p>${item.description}</p>
-        </div>
-      `).join("");
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "Load items error:",
-      error
-    );
-
-    itemsGrid.innerHTML =
-      "<p>Unable to load items</p>";
-
-  }
-
 };
 
 let currentFeedReports = [];
@@ -491,7 +447,6 @@ function disconnectSocket() {
 }
 
 async function apiFetch(url, options = {}) {
-
   const token = getToken();
 
   const response = await fetch(url, {
@@ -510,7 +465,6 @@ async function apiFetch(url, options = {}) {
   }
 
   return data;
-
 }
 
 async function loadThreads() {
@@ -2000,12 +1954,12 @@ function getValue(id) {
   return document.getElementById(id)?.value.trim() || "";
 }
 
-window.loadItems = async function () {
+async function loadItems() {
   const itemsGrid = document.getElementById("items-grid");
   if (!itemsGrid) return;
 
   try {
-    const filters = {};
+    const filters = getSelectedLocationFilters();
     const query = new URLSearchParams();
 
     if (filters.venueType) query.set("venueType", filters.venueType);
@@ -2015,7 +1969,6 @@ window.loadItems = async function () {
     const queryString = query.toString();
     const response = await fetch(`${API_BASE_URL}/reports${queryString ? `?${queryString}` : ""}`);
     const reports = await response.json();
-console.log("Reports received:", reports);
 
     if (!response.ok || !Array.isArray(reports) || reports.length === 0) {
       currentFeedReports = [];
@@ -2570,6 +2523,152 @@ async function requestPasswordReset() {
 
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".nav-links a[data-view]").forEach((link) => {
+    document
+  .getElementById("submitFeedbackBtn")
+  ?.addEventListener("click", addFeedback);
+    document
+  .getElementById("openFeedbackForm")
+  ?.addEventListener("click", () => {
+
+    const box = document.getElementById("feedbackFormBox");
+
+    if (box) {
+      box.style.display = "block";
+    }
+
+  });
+
+document
+  .getElementById("cancelFeedbackBtn")
+  ?.addEventListener("click", () => {
+
+    document.getElementById("feedbackFormBox").style.display = "none";
+
+  });
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const view = link.dataset.view;
+
+      if (view === "home") showHome();
+      if (view === "dashboard") showDashboard();
+      if (view === "about") showAbout();
+      if (view === "messages") showMessages();
+    });
+  });
+
+  initializeLocationFilters();
+  attachLocationFilterEvents();
+  attachClaimModalEvents();
+  handleImagePreview("lost-image", "lost-image-preview");
+  handleImagePreview("found-image", "found-image-preview");
+  updateNavAuthUI();
+  loadFeedback();
+  const token = getToken();
+
+if (token && token !== "null" && token !== "undefined") {
+  loadProfile();
+}
+
+  function getLocalToday() {
+  const now = new Date();
+
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+const today = getLocalToday();
+
+const lostDateInput = document.getElementById("lost-date");
+const foundDateInput = document.getElementById("found-date");
+
+if (lostDateInput) {
+  lostDateInput.max = today;
+  lostDateInput.value = today;
+}
+
+if (foundDateInput) {
+  foundDateInput.max = today;
+  foundDateInput.value = today;
+}
+
+  const actionButtons = document.querySelectorAll(".action-btn");
+
+  function scrollToSectionWithOffset(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (!section) return;
+
+    const header = document.querySelector(".site-header");
+    const headerHeight = header ? header.offsetHeight : 0;
+    const extraGap = 20;
+
+    const targetY =
+      section.getBoundingClientRect().top +
+      window.pageYOffset -
+      headerHeight -
+      extraGap;
+
+    window.scrollTo({
+      top: targetY,
+      behavior: "smooth"
+    });
+
+    section.classList.add("section-highlight");
+    setTimeout(() => {
+      section.classList.remove("section-highlight");
+    }, 1200);
+  }
+
+  if (actionButtons.length >= 2) {
+    actionButtons[0].addEventListener("click", () => {
+      scrollToSectionWithOffset("report-lost");
+    });
+
+    actionButtons[1].addEventListener("click", () => {
+      scrollToSectionWithOffset("report-found");
+    });
+  }
+
+  const heroReportBtn = document.getElementById("hero-report-btn");
+  if (heroReportBtn) {
+    heroReportBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      scrollToSectionWithOffset("report-lost");
+    });
+  }
+
+  const heroMatchesBtn = document.getElementById("hero-matches-btn");
+  if (heroMatchesBtn) {
+    heroMatchesBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      document.querySelector(".home-items")?.scrollIntoView({ behavior: "smooth" });
+    });
+  }
+
+  document.getElementById("lostForm").addEventListener("submit", async function (e) {
+  e.preventDefault(); // VERY IMPORTANT
+
+  await submitLostReport();
+});
+
+  document.getElementById("foundForm").addEventListener("submit", async function (e) {
+  e.preventDefault(); // VERY IMPORTANT
+
+  await submitFoundReport();
+});
+
+  const yearSpan = document.getElementById("year");
+  if (yearSpan) {
+    yearSpan.textContent = new Date().getFullYear();
+  }
+
+  showHome();
+});
+
 function getToken() {
 
   const token =
@@ -2587,19 +2686,17 @@ function getToken() {
 
 }
 
-if (typeof socket !== "undefined" && socket) {
+socket.on("reportCreated", () => {
+  console.log("Realtime: report received");
 
-  socket.on("feedbackCreated", () => {
-    console.log("Realtime: feedback received");
-    loadFeedback();
-  });
+  loadItems();
+});
 
-  socket.on("reportCreated", () => {
-    console.log("Realtime: report received");
-    loadItems();
-  });
+socket.on("feedbackCreated", () => {
+  console.log("Realtime: feedback received");
 
-}
+  loadFeedback();
+});
 
 function triggerGoogleLogin() {
   if (!window.google) {
@@ -2655,85 +2752,23 @@ async function handleGoogleCredentialResponse(response) {
 
 window.addEventListener("load", initializeGoogleAuth);
 
-window.loadItems = async function () {
-
-  console.log("loadItems running");
-
-  const grid =
-    document.getElementById("items-grid");
-
-  if (!grid) {
-    console.log("items-grid not found");
-    return;
-  }
-
-  try {
-
-    const res =
-      await fetch(
-        `${API_BASE_URL}/reports`
-      );
-
-    const data =
-      await res.json();
-
-    console.log("Reports received:", data);
-
-    if (!Array.isArray(data) || data.length === 0) {
-
-      grid.innerHTML =
-        "<p>No items found</p>";
-
-      return;
-
-    }
-
-    grid.innerHTML =
-      data.map(item => `
-        <div class="item-card">
-          <h3>${item.itemName}</h3>
-          <p>${item.description || ""}</p>
-        </div>
-      `).join("");
-
-  } catch (err) {
-
-    console.error(
-      "Load items error:",
-      err
-    );
-
-  }
-
-};
-
 document.addEventListener("DOMContentLoaded", () => {
 
-  console.log("Page fully loaded");
+  const loginBtn = document.getElementById("loginBtn");
+  const signupBtn = document.getElementById("signupBtn");
 
-  if (window.google && google.accounts) {
-    google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: handleGoogleCredentialResponse
+  if (loginBtn) {
+    loginBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      showLogin();
     });
   }
 
-  try { initializeLocationFilters(); } catch(e) { console.log(e); }
-try { attachLocationFilterEvents(); } catch(e) { console.log(e); }
-try { attachClaimModalEvents(); } catch(e) { console.log(e); }
-try { updateNavAuthUI(); } catch(e) { console.log(e); }
-try { loadFeedback(); } catch(e) { console.log(e); }
-
-  const token = getToken();
-
-  if (token) {
-    loadProfile();
-  }
-
-  // IMPORTANT — run AFTER DOM exists
-  if (typeof showHome === "function") {
-    showHome();
-    loadItems();
+  if (signupBtn) {
+    signupBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      showSignup();
+    });
   }
 
 });
