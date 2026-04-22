@@ -2046,7 +2046,7 @@ async function loadItems() {
 
   itemsGrid.innerHTML = `
     <article class="item-card">
-      <<div class="item-card-image">
+      <div class="item-card-image">
       <img src="${getImagePreviewSource(item)}" alt="${escapeHtml(item.itemName || 'Item')}">
       </div>
       <div class="item-card-body">
