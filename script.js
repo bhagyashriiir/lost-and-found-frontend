@@ -25,6 +25,11 @@ window.onload = function () {
 };
 
 function hideAllViews() {
+
+  if (refreshInterval) {
+  clearInterval(refreshInterval);
+}
+
   const views = [
     "view-home",
     "view-dashboard",
@@ -64,10 +69,32 @@ function showHome() {
 
   loadItems();
 
+  startAutoRefresh();
+
   window.scrollTo({
     top: 0,
     behavior: "smooth"
   });
+}
+
+let refreshInterval = null;
+
+function startAutoRefresh() {
+
+  if (refreshInterval) {
+    clearInterval(refreshInterval);
+  }
+
+  refreshInterval = setInterval(() => {
+
+    console.log("Auto refreshing feed...");
+
+    if (typeof loadItems === "function") {
+      loadItems();
+    }
+
+  }, 5000); // refresh every 5 seconds
+
 }
 
 const LOCATION_FILTER_OPTIONS = {
