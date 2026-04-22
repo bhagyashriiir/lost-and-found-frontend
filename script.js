@@ -7,6 +7,31 @@ const SOCKET_BASE_URL =
 console.log("SCRIPT LOADED");
 let socket = null;
 
+const GOOGLE_CLIENT_ID =
+"906197317156-0kbk5tk843elons9rhdkespken8i7plc.apps.googleusercontent.com";
+
+function initializeGoogleAuth() {
+  if (!window.google) {
+    console.error("Google script not loaded");
+    return;
+  }
+
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleCredentialResponse
+  });
+
+  console.log("Google initialized successfully");
+}
+
+window.onload = initializeGoogleAuth;
+
+function hideAllViews() {
+
+  if (refreshInterval) {
+  clearInterval(refreshInterval);
+}
+
   const views = [
     "view-home",
     "view-dashboard",
@@ -21,7 +46,7 @@ let socket = null;
     const el = document.getElementById(id);
     if (el) el.style.display = "none";
   });
-
+}
 
 function setActiveNav(view) {
   document.querySelectorAll(".nav-links a").forEach((link) => {
