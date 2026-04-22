@@ -2070,7 +2070,7 @@ async function loadItems() {
 
     updateMapView(reports[0]);
     attachItemCardMapEvents(reports);
-  } } catch (error) {
+  } catch (error) {
   console.error("LOAD ITEMS ERROR:", error);
 
   itemsGrid.innerHTML = `
@@ -2087,6 +2087,7 @@ async function loadItems() {
   `;
 
   updateMapView();
+}
 }
 
 async function submitLostReport() {
