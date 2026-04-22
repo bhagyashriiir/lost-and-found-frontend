@@ -8,7 +8,7 @@ console.log("SCRIPT LOADED");
 let socket = null;
 
 const GOOGLE_CLIENT_ID =
-"906197317156-0kbk5tk843elons9rhdkespken8i7plc.apps.googleusercontent.com";
+  "906197317156-0kbk5tk843elons9rhdkespken8i7plc.apps.googleusercontent.com";
 
 function initializeGoogleAuth() {
   if (!window.google) {
@@ -24,7 +24,16 @@ function initializeGoogleAuth() {
   console.log("Google initialized successfully");
 }
 
-window.onload = initializeGoogleAuth;
+window.addEventListener("load", initializeGoogleAuth);
+
+function triggerGoogleLogin() {
+  if (!window.google) {
+    alert("Google not loaded yet");
+    return;
+  }
+
+  google.accounts.id.prompt();
+}
 
 function hideAllViews() {
 
@@ -259,7 +268,7 @@ function logoutUser() {
   localStorage.removeItem("user");
   updateNavAuthUI();
   
-  connectSocket();   
+  disconnectSocket();   
   showHome();
 }
 
@@ -1237,10 +1246,6 @@ function attachSignupEvents() {
   const goToLoginBtn = document.getElementById("goToLoginBtn");
   const socialBtns = document.querySelectorAll(".signupSocials .socialBtn");
 
-  function triggerGoogleLogin() {
-  google.accounts.id.prompt();
-}
-
  if (signupForm) {
   signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -1589,10 +1594,6 @@ function attachLoginEvents() {
   const goToSignupBtn = document.getElementById("goToSignupBtn");
   const forgotPasswordBtn = document.querySelector(".forgotPasswordBtn");
   const socialBtns = document.querySelectorAll(".loginSocials .socialBtn");
-
-  function triggerGoogleLogin() {
-  google.accounts.id.prompt();
-}
 
   if (loginForm) {
     loginForm.addEventListener("submit", async (e) => {
@@ -2069,14 +2070,13 @@ async function loadItems() {
 
     updateMapView(reports[0]);
     attachItemCardMapEvents(reports);
-  } catch (error) {
-
+  } } catch (error) {
   console.error("LOAD ITEMS ERROR:", error);
 
   itemsGrid.innerHTML = `
     <article class="item-card">
       <div class="item-card-image">
-      <img src="${getImagePreviewSource(item)}" alt="${escapeHtml(item.itemName || 'Item')}">
+        <img src="https://via.placeholder.com/400x400?text=Error" alt="Error">
       </div>
       <div class="item-card-body">
         <h3>Unable to load items</h3>
@@ -2087,7 +2087,6 @@ async function loadItems() {
   `;
 
   updateMapView();
-}
 }
 
 async function submitLostReport() {
