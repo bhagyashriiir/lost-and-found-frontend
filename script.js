@@ -9,20 +9,7 @@ let socket = null;
 
 const GOOGLE_CLIENT_ID = "906197317156-6stev5ndltobit21mtl5qc1n8mua77sn.apps.googleusercontent.com";
 
-window.onload = function () {
-
-  if (window.google && google.accounts) {
-
-    google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: handleGoogleCredentialResponse
-    });
-
-    console.log("Google initialized successfully");
-
-  }
-
-};
+window.addEventListener("load", initializeGoogleAuth);
 
 function hideAllViews() {
 
@@ -44,6 +31,35 @@ function hideAllViews() {
     const el = document.getElementById(id);
     if (el) el.style.display = "none";
   });
+}
+
+async function handleGoogleCredentialResponse(response) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/auth/google`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        credential: response.credential
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Google login failed");
+    }
+
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+
+    updateNavAuthUI();
+    showHome();
+
+  } catch (error) {
+    alert(error.message);
+  }
 }
 
 function setActiveNav(view) {
@@ -2783,10 +2799,6 @@ async function handleGoogleCredentialResponse(response) {
     alert(error.message || "Google login failed");
   }
 }
-
-window.onload = () => {
-  setTimeout(initializeGoogleAuth, 500);
-};
 
 document.addEventListener("DOMContentLoaded", () => {
 
