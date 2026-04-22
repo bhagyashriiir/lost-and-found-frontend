@@ -2033,23 +2033,27 @@ async function loadItems() {
 `;
     }).join("");
 
-    updateMapView(reports[0]);
-    attachItemCardMapEvents(reports);
+    //updateMapView(reports[0]);
+    //attachItemCardMapEvents(reports);
   } catch (error) {
-    itemsGrid.innerHTML = `
-      <article class="item-card">
-        <div class="item-card-image">
-          <img src="https://via.placeholder.com/400x400?text=Error" alt="Error">
-        </div>
-        <div class="item-card-body">
-          <h3>Unable to load items</h3>
-          <p>Please check backend connection</p>
-          <span>Server error</span>
-        </div>
-      </article>
-    `;
-    updateMapView();
-  }
+
+  console.error("LOAD ITEMS ERROR:", error);
+
+  itemsGrid.innerHTML = `
+    <article class="item-card">
+      <div class="item-card-image">
+        <img src="https://via.placeholder.com/400x400?text=Error" alt="Error">
+      </div>
+      <div class="item-card-body">
+        <h3>Unable to load items</h3>
+        <p>Please check backend connection</p>
+        <span>Server error</span>
+      </div>
+    </article>
+  `;
+
+  updateMapView();
+}
 }
 
 async function submitLostReport() {
