@@ -1888,14 +1888,19 @@ function showDashboard() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function getImagePreviewSource(item) {
-  const BACKEND_URL = "https://lost-and-found-backend-rsuq.onrender.com";
+function getImagePreviewSource(report) {
 
-  if (item.image) {
-    return BACKEND_URL + item.image;
+  if (!report || !report.image) {
+    return "https://via.placeholder.com/300x200?text=No+Image";
   }
 
-  return "images/no-image.png";
+  // if already full URL
+  if (report.image.startsWith("http")) {
+    return report.image;
+  }
+
+  // build full backend path
+  return SOCKET_BASE_URL + report.image;
 }
 
 function readImageFileAsDataUrl(file) {
@@ -2033,16 +2038,16 @@ async function loadItems() {
 `;
     }).join("");
 
-    //updateMapView(reports[0]);
-    //attachItemCardMapEvents(reports);
+    updateMapView(reports[0]);
+    attachItemCardMapEvents(reports);
   } catch (error) {
 
   console.error("LOAD ITEMS ERROR:", error);
 
   itemsGrid.innerHTML = `
     <article class="item-card">
-      <div class="item-card-image">
-        <img src="https://via.placeholder.com/400x400?text=Error" alt="Error">
+      <<div class="item-card-image">
+      <img src="${getImagePreviewSource(item)}" alt="${escapeHtml(item.itemName || 'Item')}">
       </div>
       <div class="item-card-body">
         <h3>Unable to load items</h3>
