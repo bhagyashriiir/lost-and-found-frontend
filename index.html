@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lost & Found Dubai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+  <div class="container nav">
+    <div class="brand">
+      <div class="brand-mark">
+        <img src="images/logo.png" alt="Lost & Found Logo">
+      </div>
+    </div>
+
+      <nav class="nav-links">
+        <a data-view="home">Home</a>
+        <a data-view="dashboard">Dashboard</a>
+        <a data-view="messages">Messages</a>
+        <a data-view="about">About</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="#" class="btn btn-outline-dark" id="loginBtn">Login</a>
+        <a href="#" class="btn btn-accent" id="signupBtn">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="view-home">
+    <div id="items-grid"></div>
+    <section class="hero">
+      <div class="hero-grid"></div>
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="dot"></span>
+            DIGITAL RECOVERY PLATFORM
+          </div>
+
+          <h1>
+            Reconnect Lost
+            <br />
+            Items <span>With Confidence.</span>
+          </h1>
+
+          <p class="hero-text">
+            A modern platform for reporting, matching and recovering lost items across Dubai.
+            Built to make item recovery feel faster, safer and more organized.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#" class="btn btn-accent" id="hero-report-btn">Submit a Report</a>
+            <a href="#" class="btn btn-outline-dark" id="hero-matches-btn">Explore Matches</a>
+          </div>
+
+          <div class="hero-meta">
+            <div class="meta-item">
+              <strong>AI-assisted</strong>
+              <span>smart item matching</span>
+            </div>
+            <div class="meta-item">
+              <strong>Secure</strong>
+              <span>verification process</span>
+            </div>
+            <div class="meta-item">
+              <strong>Centralized</strong>
+              <span>Dubai-wide reporting</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-panel">
+          <div class="action-card">
+            <div class="iconWrap">
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <rect x="14" y="18" width="36" height="34" rx="6" fill="none" stroke="currentColor" stroke-width="3"/>
+                <path d="M24 18c0-7 4-12 8-12s8 5 8 12" fill="none" stroke="currentColor" stroke-width="3"/>
+                <path d="M32 30v12" fill="none" stroke="currentColor" stroke-width="3"/>
+                <path d="M26 36h12" fill="none" stroke="currentColor" stroke-width="3"/>
+              </svg>
+            </div>
+            <p>Report a lost item with details to help recover it.</p>
+            <button class="btn btn-accent action-btn">Submit Form</button>
+          </div>
+
+          <div class="action-card">
+            <div class="iconWrap">
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <circle cx="28" cy="28" r="16" fill="none" stroke="currentColor" stroke-width="3"/>
+                <path d="M40 40l14 14" fill="none" stroke="currentColor" stroke-width="3"/>
+                <path d="M18 16l20 24" fill="none" stroke="currentColor" stroke-width="3"/>
+              </svg>
+            </div>
+            <p>Report a found item to help return to its owner.</p>
+            <button class="btn btn-accent action-btn">Submit Form</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust-strip">
+      <div class="container trust-grid">
+        <div class="trust-item">AI Match Suggestions</div>
+        <div class="trust-item">Duplicate Detection</div>
+        <div class="trust-item">Secure User Verification</div>
+        <div class="trust-item">Designed for Dubai Spaces</div>
+      </div>
+    </section>
+
+    <section class="home-block home-items">
+      <div class="container">
+        <h2 class="home-section-title">Items</h2>
+
+        <div class="location-filter-panel">
+  <div class="location-filter-grid-modern">
+
+    <select id="filter-mall">
+      <option value="">All Malls</option>
+    </select>
+
+    <select id="filter-metro">
+      <option value="">All Metro Stations</option>
+    </select>
+
+    <select id="filter-airport">
+      <option value="">All Airports</option>
+    </select>
+
+    <select id="filter-city-area">
+      <option value="">All City Areas</option>
+    </select>
+
+    <button id="clear-location-filters" type="button" class="clear-btn">
+      Clear Filters
+    </button>
+  </div>
+</div>
+
+        <div class="items-grid" id="items-grid">
+          <article class="item-card">
+            <div class="item-card-image">
+              <img src="https://via.placeholder.com/400x400?text=Loading" alt="Loading">
+            </div>
+            <div class="item-card-body">
+              <h3>Loading items...</h3>
+              <p>Please wait</p>
+              <span>Dubai</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="panelCard map-view-card">
+          <div class="panelHead">
+            <h3>Map View</h3>
+            <p id="items-map-label">Showing latest item location</p>
+          </div>
+          <div class="map-embed-wrap">
+            <iframe
+              id="items-map-frame"
+              title="Lost and found item map"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps?q=Dubai&output=embed"
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="report-lost" class="home-block report-section">
+      <div class="container">
+        <h2 class="home-section-title">Report Lost Item</h2>
+
+        <div class="report-grid">
+          <form class="report-form-card" id="lostForm">
+
+  <div class="report-group">
+    <h3>Personal Details</h3>
+    <div class="report-fields">
+      <input type="text" id="lost-name" placeholder="Name:" />
+      <input type="email" id="lost-email" placeholder="Email:" />
+      <input type="text" id="lost-phone" placeholder="Phone Number:" />
+    </div>
+  </div>
+
+  <div class="report-group">
+    <h3>Item Details</h3>
+    <div class="report-fields">
+      <input type="text" id="lost-item-name" placeholder="Item Name:" />
+      <input type="text" id="lost-category" placeholder="Category:" />
+      <input type="text" id="lost-location" placeholder="Location Last Seen:" />
+      <input type="text" id="lost-venue-type" placeholder="Venue Type (Mall / Metro / Airport):" />
+      <input type="text" id="lost-city-area" placeholder="City Area (Downtown / Marina / Deira):" />
+      <input type="date" id="lost-date" />
+      <input type="time" id="lost-time" />
+      <textarea id="lost-description" placeholder="Description:"></textarea>
+    </div>
+  </div>
+
+  <!-- Button LAST -->
+  <button
+    class="btn btn-dark report-submit"
+    id="submit-lost-report"
+    type="submit"
+  >
+    Submit Lost Report
+  </button>
+
+</form>
+
+          <div class="upload-card">
+  <h3>Upload Attachment (JPEG / PNG)</h3>
+
+  <div class="upload-box">
+    <input type="file" id="lost-image" accept="image/png,image/jpeg,image/jpg" />
+
+    <p class="upload-helper">
+      Choose an image for the lost item.
+    </p>
+
+    <img
+      id="lost-image-preview"
+      alt="Lost item preview"
+      style="display:none; width:100%; max-width:220px; margin-top:12px; border-radius:16px; object-fit:cover; aspect-ratio:1/1;"
+    />
+  </div>
+
+  <!-- NEW LOCATION -->
+  <div class="verification-side">
+    <h3>Verification Questions</h3>
+
+    <input
+      type="text"
+      id="lost-verification-1"
+      placeholder="Mention a unique mark / detail:"
+    />
+
+    <input
+      type="text"
+      id="lost-verification-2"
+      placeholder="Mention serial number / contents / special feature:"
+    />
+  </div>
+
+</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="report-found" class="home-block report-section">
+      <div class="container">
+        <h2 class="home-section-title">Report Found Item</h2>
+
+        <div class="report-grid">
+          <form class="report-form-card" id="foundForm">
+            <div class="report-group">
+              <h3>Personal Details</h3>
+              <div class="report-fields">
+                <input type="text" id="found-name" placeholder="Name:" />
+                <input type="email" id="found-email" placeholder="Email:" />
+                <input type="text" id="found-phone" placeholder="Phone Number:" />
+              </div>
+            </div>
+
+            <div class="report-group">
+              <h3>Item Details</h3>
+              <div class="report-fields">
+                <input type="text" id="found-item-name" placeholder="Item Name:" />
+                <input type="text" id="found-category" placeholder="Category:" />
+                <input type="text" id="found-location" placeholder="Where Found:" />
+                <input type="text" id="found-venue-type" placeholder="Venue Type (Mall / Metro / Airport):" />
+                <input type="text" id="found-city-area" placeholder="City Area (Downtown / Marina / Deira):" />
+                <input type="date" id="found-date" />
+                <input type="time" id="found-time" />
+                <textarea id="found-description" placeholder="Description:"></textarea>
+              </div>
+            </div>
+
+            <button class="btn btn-dark report-submit" id="submit-found-report">Submit Found Report</button>
+          </form>
+
+          <div class="upload-card">
+  <h3>Upload Attachment (JPEG / PNG)</h3>
+
+  <div class="upload-box">
+    <input type="file" id="found-image" accept="image/png,image/jpeg,image/jpg" />
+
+    <p class="upload-helper">
+      Choose an image for the found item.
+    </p>
+
+    <img
+      id="found-image-preview"
+      alt="Found item preview"
+      style="display:none; width:100%; max-width:220px; margin-top:12px; border-radius:16px; object-fit:cover; aspect-ratio:1/1;"
+    />
+  </div>
+
+  <!-- NEW LOCATION -->
+  <div class="verification-side">
+    <h3>Verification Questions</h3>
+
+    <input
+      type="text"
+      id="found-verification-1"
+      placeholder="Mention a unique mark / detail:"
+    />
+
+    <input
+      type="text"
+      id="found-verification-2"
+      placeholder="Mention serial number / contents / special feature:"
+    />
+  </div>
+
+</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-block feedback-section">
+  <div class="container">
+
+    <div class="feedback-top">
+      <h2 class="home-section-title">Feedback</h2>
+      <button class="feedback-add" type="button" id="openFeedbackForm">+</button>
+    </div>
+
+    <!-- Feedback form (hidden initially) -->
+    <div id="feedbackFormBox" style="display:none; margin-bottom:20px;">
+      <textarea
+        id="feedbackMessage"
+        placeholder="Write your feedback..."
+        rows="3"
+        style="width:100%; padding:12px; border-radius:10px; border:1px solid #ddd;"
+      ></textarea>
+
+      <div style="margin-top:10px;">
+        <button class="btn btn-accent" id="submitFeedbackBtn">
+          Submit Feedback
+        </button>
+
+        <button class="btn btn-outline-dark" id="cancelFeedbackBtn">
+          Cancel
+        </button>
+      </div>
+    </div>
+
+    <div class="feedback-grid" id="feedbackGrid">
+      <!-- Feedback loads here -->
+    </div>
+
+  </div>
+</section>
+  </main>
+
+  <section id="view-about" class="aboutView" style="display:none;"></section>
+  <section id="view-signup" class="view" style="display:none;"></section>
+  <section id="view-login" class="view" style="display:none;"></section>
+  <section id="view-dashboard" class="view" style="display:none;"></section>
+  <section id="view-profile" class="view" style="display:none;"></section>
+  <section id="view-messages" class="view" style="display:none;">
+
+  <div class="container messagesWrap">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="messagesSidebar">
+
+      <input
+        type="text"
+        placeholder="Search conversations"
+        class="messagesSearch"
+      />
+
+      <h3 class="messagesHeading">Messages</h3>
+
+      <div class="threadList"></div>
+
+    </aside>
+
+    <!-- RIGHT CHAT PANEL -->
+    <section class="chatPanel">
+
+      <header class="chatHeader">
+        <div class="chatUser">
+          <div class="chatUserAvatar">S</div>
+          <div>
+            <strong>Secure Messages</strong>
+            <p>Select a conversation</p>
+          </div>
+        </div>
+      </header>
+
+      <div class="chatBody" id="chatBody">
+        <p>No messages yet.</p>
+      </div>
+
+      <form class="chatComposer" id="chatComposer">
+        <input
+          type="text"
+          placeholder="Type a message..."
+          id="messageInput"
+        />
+        <button type="submit">Send</button>
+      </form>
+
+    </section>
+
+  </div>
+
+</section>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="brand brand-footer">
+          <div class="brand-text">
+            <span class="brand-title">Lost & Found</span>
+            <span class="brand-subtitle">Modern recovery platform</span>
+          </div>
+        </div>
+        <p>
+          A digital platform designed to simplify item recovery through structured reporting,
+          smart matching and secure communication.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <h4>Platform</h4>
+        <a href="#">Home</a>
+        <a href="#">Report Lost</a>
+        <a href="#">Report Found</a>
+        <a href="#">Dashboard</a>
+      </div>
+
+      <div class="footer-links">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Messages</a>
+        <a href="#">Privacy</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© <span id="year"></span> Lost & Found Dubai. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="claim-modal" id="claim-modal" hidden>
+    <div class="claim-modal-backdrop" id="claim-modal-backdrop"></div>
+    <div class="claim-modal-card">
+      <button type="button" class="claim-close-btn" id="claim-close-btn">×</button>
+      <div id="claim-modal-content"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="./script.js"></script>
+</body>
+</html>
