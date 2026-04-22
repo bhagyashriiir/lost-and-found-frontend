@@ -2784,7 +2784,9 @@ async function handleGoogleCredentialResponse(response) {
   }
 }
 
-window.addEventListener("load", initializeGoogleAuth);
+window.onload = () => {
+  setTimeout(initializeGoogleAuth, 500);
+};
 
 document.addEventListener("DOMContentLoaded", () => {
 
