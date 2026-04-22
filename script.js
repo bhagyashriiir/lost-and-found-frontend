@@ -7,29 +7,6 @@ const SOCKET_BASE_URL =
 console.log("SCRIPT LOADED");
 let socket = null;
 
-const GOOGLE_CLIENT_ID = "906197317156-6stev5ndltobit21mtl5qc1n8mua77sn.apps.googleusercontent.com";
-
-window.onload = function () {
-
-  if (window.google && google.accounts) {
-
-    google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: handleGoogleCredentialResponse
-    });
-
-    console.log("Google initialized successfully");
-
-  }
-
-};
-
-function hideAllViews() {
-
-  if (refreshInterval) {
-  clearInterval(refreshInterval);
-}
-
   const views = [
     "view-home",
     "view-dashboard",
