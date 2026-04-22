@@ -7,33 +7,22 @@ const SOCKET_BASE_URL =
 console.log("SCRIPT LOADED");
 let socket = null;
 
-const GOOGLE_CLIENT_ID =
-  "906197317156-0kbk5tk843elons9rhdkespken8i7plc.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "906197317156-6stev5ndltobit21mtl5qc1n8mua77sn.apps.googleusercontent.com";
 
-function initializeGoogleAuth() {
-  if (!window.google) {
-    console.error("Google script not loaded");
-    return;
+window.onload = function () {
+
+  if (window.google && google.accounts) {
+
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleCredentialResponse
+    });
+
+    console.log("Google initialized successfully");
+
   }
 
-  google.accounts.id.initialize({
-    client_id: GOOGLE_CLIENT_ID,
-    callback: handleGoogleCredentialResponse
-  });
-
-  console.log("Google initialized successfully");
-}
-
-window.addEventListener("load", initializeGoogleAuth);
-
-function triggerGoogleLogin() {
-  if (!window.google) {
-    alert("Google not loaded yet");
-    return;
-  }
-
-  google.accounts.id.prompt();
-}
+};
 
 function hideAllViews() {
 
@@ -268,7 +257,7 @@ function logoutUser() {
   localStorage.removeItem("user");
   updateNavAuthUI();
   
-  disconnectSocket();   
+  connectSocket();   
   showHome();
 }
 
@@ -2071,12 +2060,13 @@ async function loadItems() {
     updateMapView(reports[0]);
     attachItemCardMapEvents(reports);
   } catch (error) {
+
   console.error("LOAD ITEMS ERROR:", error);
 
   itemsGrid.innerHTML = `
     <article class="item-card">
       <div class="item-card-image">
-        <img src="https://via.placeholder.com/400x400?text=Error" alt="Error">
+      <img src="${getImagePreviewSource(item)}" alt="${escapeHtml(item.itemName || 'Item')}">
       </div>
       <div class="item-card-body">
         <h3>Unable to load items</h3>
