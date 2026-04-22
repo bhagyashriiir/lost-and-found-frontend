@@ -21,7 +21,7 @@ let socket = null;
     const el = document.getElementById(id);
     if (el) el.style.display = "none";
   });
-}
+
 
 function setActiveNav(view) {
   document.querySelectorAll(".nav-links a").forEach((link) => {
