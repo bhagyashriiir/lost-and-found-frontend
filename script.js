@@ -1,6 +1,8 @@
+// Base API URL pointing to the deployed backend server on Render
 const API_BASE_URL =
   "https://lost-and-found-backend-rsuq.onrender.com/api";
 
+// Base URL for Socket.IO server to enable real-time messaging and notifications
 const SOCKET_BASE_URL =
   "https://lost-and-found-backend-rsuq.onrender.com";
 
@@ -9,8 +11,10 @@ let socket = null;
 
 const GOOGLE_CLIENT_ID = "906197317156-6stev5ndltobit21mtl5qc1n8mua77sn.apps.googleusercontent.com";
 
+// Initialize Google authentication when page loads
 window.addEventListener("load", initializeGoogleAuth);
 
+// Hide all system views before displaying the selected page
 function hideAllViews() {
 
   if (refreshInterval) {
@@ -33,6 +37,7 @@ function hideAllViews() {
   });
 }
 
+// Handle Google login response and authenticate user with backend server
 async function handleGoogleCredentialResponse(response) {
   try {
     const res = await fetch(`${API_BASE_URL}/auth/google`, {
@@ -72,6 +77,7 @@ function setActiveNav(view) {
   });
 }
 
+// Display home page and load latest item reports
 function showHome() {
   hideAllViews();
 
@@ -95,6 +101,7 @@ function showHome() {
 
 let refreshInterval = null;
 
+// Automatically refresh item feed at regular intervals
 function startAutoRefresh() {
 
   if (refreshInterval) {
@@ -113,6 +120,7 @@ function startAutoRefresh() {
 
 }
 
+// Define available location filters for malls, metro stations, airports and city areas
 const LOCATION_FILTER_OPTIONS = {
   malls: [
     "Dubai Mall",
@@ -387,6 +395,7 @@ function getSelectedLocationFilters() {
   return {};
 }
 
+// Establish secure socket connection using authentication token
 function connectSocket() {
 
   const token = getToken();
@@ -417,10 +426,10 @@ function connectSocket() {
   });
 
   if (socket) {
-  socket.on("newNotification", showNotification);
+  socket.on("newNotification", showNotification);  // Listen for real-time notifications from server
 }
 
-  socket.on("reportCreated", () => {
+  socket.on("reportCreated", () => {  // Refresh items list when a new report is created
     console.log("New report detected — refreshing items");
 
     if (typeof loadItems === "function") {
@@ -510,6 +519,7 @@ async function apiFetch(url, options = {}) {
   return data;
 }
 
+// Retrieve message conversations for the logged-in user
 async function loadThreads() {
   try {
     const res = await fetch(`${API_BASE_URL}/messages/threads`, {
@@ -536,6 +546,7 @@ async function loadThreads() {
   }
 }
 
+// Load messages for selected chat conversation
 async function loadChat(chatId) {
   try {
     const data = await apiFetch(`${API_BASE_URL}/messages/${chatId}`);
@@ -554,6 +565,7 @@ async function loadChat(chatId) {
   }
 }
 
+// Send message to another user through secure chat system
 async function sendChatMessage(text) {
   if (!activeChatId) return;
 
@@ -568,6 +580,7 @@ async function sendChatMessage(text) {
   }
 }
 
+// Update map to display selected item location
 function updateMapView(report) {
   const mapFrame = document.getElementById("items-map-frame");
   const mapLabel = document.getElementById("items-map-label");
@@ -627,6 +640,7 @@ function createMatchListHTML(matches = []) {
   `).join("");
 }
 
+// Retrieve user feedback from server and display in feedback section
 async function loadFeedback() {
   const grid = document.getElementById("feedbackGrid");
 
@@ -662,6 +676,7 @@ async function loadFeedback() {
   }
 }
 
+// Submit user feedback to backend system
 async function addFeedback() {
 
   const token = getToken();
@@ -709,6 +724,7 @@ async function addFeedback() {
 
 }
 
+// Load user profile information from server
 async function loadProfile() {
   try {
     const res = await fetch(
@@ -788,7 +804,6 @@ async function saveProfile() {
 
     alert("Profile updated successfully");
 
-    // 🔥 THIS FIXES YOUR NAVBAR IMAGE
     updateNavbarProfile(profileImage);
 
   } catch (err) {
@@ -1281,10 +1296,9 @@ function attachSignupEvents() {
         throw new Error(result.message || "Signup failed");
       }
 
-      // ✅ ONLY ONE POPUP
       alert("Signup successful!");
 
-      // ✅ Redirect to login page
+      // Redirect to login page
       showLogin();
 
     } catch (err) {
@@ -1379,6 +1393,7 @@ function getProfileHTML(userData = {}) {
   `;
 }
 
+// Start secure chat between users after successful claim verification
 async function startSecureChat(reportId) {
   try {
     const chat = await apiFetch(`${API_BASE_URL}/messages/start`, {
@@ -1548,10 +1563,10 @@ const LOGIN_HTML = `
 
           <button class="socialBtn" type="button">
             <span class="socialIcon apple">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M16.365 1.43c0 1.14-.46 2.23-1.21 3.04-.79.86-2.08 1.53-3.24 1.43-.15-1.11.49-2.3 1.22-3.05.81-.83 2.22-1.45 3.23-1.42zM20.92 17.03c-.58 1.34-.86 1.94-1.61 3.09-1.04 1.57-2.5 3.52-4.32 3.53-1.63.02-2.05-1.05-4.26-1.04-2.21.01-2.67 1.06-4.26 1.04-1.83-.02-3.29-1.96-4.33-3.53C.72 15.07 0 12.76 0 10.59c0-3.38 2.21-5.18 4.37-5.21 1.72-.03 3.35 1.16 4.26 1.16.91 0 2.89-1.44 4.88-1.23.83.03 3.16.33 4.66 2.54-.12.07-2.78 1.62-2.75 4.83.03 3.84 3.37 5.12 3.41 5.14z"/>
-  </svg>
-</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16.365 1.43c0 1.14-.46 2.23-1.21 3.04-.79.86-2.08 1.53-3.24 1.43-.15-1.11.49-2.3 1.22-3.05.81-.83 2.22-1.45 3.23-1.42zM20.92 17.03c-.58 1.34-.86 1.94-1.61 3.09-1.04 1.57-2.5 3.52-4.32 3.53-1.63.02-2.05-1.05-4.26-1.04-2.21.01-2.67 1.06-4.26 1.04-1.83-.02-3.29-1.96-4.33-3.53C.72 15.07 0 12.76 0 10.59c0-3.38 2.21-5.18 4.37-5.21 1.72-.03 3.35 1.16 4.26 1.16.91 0 2.89-1.44 4.88-1.23.83.03 3.16.33 4.66 2.54-.12.07-2.78 1.62-2.75 4.83.03 3.84 3.37 5.12 3.41 5.14z"/>
+            </svg>
+            </span>
             <span>Continue with Apple</span>
           </button>
         </div>
@@ -1879,6 +1894,7 @@ function getDashboardHTML() {
   `;
 }
 
+// Load reports created by the current user for dashboard display
 async function loadDashboardReports() {
   const tbody = document.getElementById("dashboardReportsBody");
   if (!tbody) return;
@@ -1955,6 +1971,7 @@ function readImageFileAsDataUrl(file) {
   });
 }
 
+// Preview uploaded image before submitting report
 function handleImagePreview(inputId, previewId) {
   const input = document.getElementById(inputId);
   const preview = document.getElementById(previewId);
@@ -2000,6 +2017,7 @@ function getValue(id) {
   return document.getElementById(id)?.value.trim() || "";
 }
 
+// Retrieve lost and found reports from backend server
 async function loadItems() {
   const itemsGrid = document.getElementById("items-grid");
   if (!itemsGrid) return;
@@ -2104,6 +2122,7 @@ async function loadItems() {
 }
 }
 
+// Submit lost item report with image and verification details
 async function submitLostReport() {
 
   const token = getToken();
@@ -2215,6 +2234,7 @@ async function submitLostReport() {
 
 }
 
+// Submit found item report to help return item to owner
 async function submitFoundReport() {
 
   const token = getToken();
@@ -2700,13 +2720,13 @@ if (foundDateInput) {
   }
 
   document.getElementById("lostForm").addEventListener("submit", async function (e) {
-  e.preventDefault(); // VERY IMPORTANT
+  e.preventDefault(); 
 
   await submitLostReport();
 });
 
   document.getElementById("foundForm").addEventListener("submit", async function (e) {
-  e.preventDefault(); // VERY IMPORTANT
+  e.preventDefault(); 
 
   await submitFoundReport();
 });

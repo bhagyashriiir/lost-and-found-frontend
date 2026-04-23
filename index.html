@@ -1,3 +1,4 @@
+<!-- Define document type and main structure for the Lost & Found web application -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Load Google Identity Services script to enable Google account login -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -20,6 +23,7 @@
       </div>
     </div>
 
+    <!-- Navigation links to switch between system views such as Home, Dashboard, Messages and About -->
       <nav class="nav-links">
         <a data-view="home">Home</a>
         <a data-view="dashboard">Dashboard</a>
@@ -35,6 +39,7 @@
   </header>
 
   <main id="view-home">
+    <!-- Hero section introduces the purpose of the platform and key system capabilities -->
     <section class="hero">
       <div class="hero-grid"></div>
       <div class="container hero-inner">
@@ -56,6 +61,7 @@
           </p>
 
           <div class="hero-actions">
+            <!-- Button allowing users to submit a lost or found item report -->
             <a href="#" class="btn btn-accent" id="hero-report-btn">Submit a Report</a>
             <a href="#" class="btn btn-outline-dark" id="hero-matches-btn">Explore Matches</a>
           </div>
@@ -114,10 +120,12 @@
       </div>
     </section>
 
+    <!-- Section displaying lost and found items retrieved from the database -->
     <section class="home-block home-items">
       <div class="container">
         <h2 class="home-section-title">Items</h2>
 
+        <!-- Location filtering controls to help users find items by venue or city area -->
         <div class="location-filter-panel">
   <div class="location-filter-grid-modern">
 
@@ -162,6 +170,7 @@
             <p id="items-map-label">Showing latest item location</p>
           </div>
           <div class="map-embed-wrap">
+            <!-- Embedded Google Map to display item locations -->
             <iframe
               id="items-map-frame"
               title="Lost and found item map"
@@ -180,6 +189,7 @@
         <h2 class="home-section-title">Report Lost Item</h2>
 
         <div class="report-grid">
+          <!-- Form allowing users to submit details of a lost item -->
           <form class="report-form-card" id="lostForm">
 
   <div class="report-group">
@@ -205,7 +215,6 @@
     </div>
   </div>
 
-  <!-- Button LAST -->
   <button
     class="btn btn-dark report-submit"
     id="submit-lost-report"
@@ -233,7 +242,7 @@
     />
   </div>
 
-  <!-- NEW LOCATION -->
+  <!-- Input fields used to verify ownership of lost items during claim process -->
   <div class="verification-side">
     <h3>Verification Questions</h3>
 
@@ -260,6 +269,7 @@
         <h2 class="home-section-title">Report Found Item</h2>
 
         <div class="report-grid">
+          <!-- Form allowing users to submit details of a found item -->
           <form class="report-form-card" id="foundForm">
             <div class="report-group">
               <h3>Personal Details</h3>
@@ -291,6 +301,7 @@
   <h3>Upload Attachment (JPEG / PNG)</h3>
 
   <div class="upload-box">
+    <!-- File input to upload image of lost item -->
     <input type="file" id="found-image" accept="image/png,image/jpeg,image/jpg" />
 
     <p class="upload-helper">
@@ -304,7 +315,6 @@
     />
   </div>
 
-  <!-- NEW LOCATION -->
   <div class="verification-side">
     <h3>Verification Questions</h3>
 
@@ -326,6 +336,7 @@
       </div>
     </section>
 
+    <!-- Section where users can submit feedback about the system -->
     <section class="home-block feedback-section">
   <div class="container">
 
@@ -367,7 +378,7 @@
   <section id="view-login" class="view" style="display:none;"></section>
   <section id="view-dashboard" class="view" style="display:none;"></section>
   <section id="view-profile" class="view" style="display:none;"></section>
-  <section id="view-messages" class="view" style="display:none;">
+  <section id="view-messages" class="view" style="display:none;">  
 
   <div class="container messagesWrap">
 
@@ -404,6 +415,7 @@
       </div>
 
       <form class="chatComposer" id="chatComposer">
+        <!-- Input field allowing users to send secure messages -->
         <input
           type="text"
           placeholder="Type a message..."
@@ -455,6 +467,7 @@
     </div>
   </footer>
 
+  <!-- Modal window used to display claim verification details -->
   <div class="claim-modal" id="claim-modal" hidden>
     <div class="claim-modal-backdrop" id="claim-modal-backdrop"></div>
     <div class="claim-modal-card">
@@ -463,6 +476,7 @@
     </div>
   </div>
 
+  <!-- Load Socket.IO library to enable real-time messaging and notifications -->
   <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
   <script src="script.js"></script>
 </body>

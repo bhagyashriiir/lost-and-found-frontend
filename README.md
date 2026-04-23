@@ -1,6 +1,6 @@
 # Lost & Found Dubai Frontend
 
-A responsive frontend prototype for a digital lost and found platform designed to support item reporting, matching, and recovery across Dubai.
+A responsive frontend prototype for a digital lost and found platform designed to support item reporting, matching and recovery across Dubai.
 
 ## Features
 - Homepage hero section

@@ -1,3 +1,4 @@
+// Function to load all secure message conversations for the logged-in user
 async function loadThreads() {
   try {
     const res = await fetch(
@@ -14,6 +15,7 @@ async function loadThreads() {
 
     console.log("THREAD DATA:", threads);
 
+    // Select container element where message threads will be displayed
     const list =
       document.querySelector(".messages-list");
 
@@ -24,14 +26,14 @@ async function loadThreads() {
       return;
     }
 
-    // safer check
+    // Display message if no conversations exist
     if (!Array.isArray(threads) || threads.length === 0) {
       list.innerHTML =
         "<p>No secure conversations yet.</p>";
       return;
     }
 
-    // render threads
+    // Generate HTML content for each message thread dynamically
     list.innerHTML = threads
       .map(thread => {
         const name =
@@ -60,7 +62,7 @@ async function loadThreads() {
       })
       .join("");
 
-    // click handler
+    // Add click event listener to open selected chat conversation
     document
       .querySelectorAll(".message-item")
       .forEach(item => {
@@ -82,6 +84,7 @@ async function loadThreads() {
   }
 }
 
+// Function to load messages for a selected chat conversation
 async function openChat(chatId) {
   try {
     const res = await fetch(
@@ -100,6 +103,6 @@ async function openChat(chatId) {
     console.log("CHAT:", data);
 
   } catch (err) {
-    console.error("Chat error:", err);
+    console.error("Chat error:", err);  // Log error if chat loading fails
   }
 }
