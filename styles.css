@@ -1,3 +1,39 @@
+/*
+=============================================================
+Project: Lost & Found Web Application
+Module: CST3990 Undergraduate Individual Project
+File Name: style.css
+
+Author: Bhagyashri Roopesh
+Student ID: M00975809
+University: Middlesex University Dubai
+
+Date Created: 20 January 2026
+Last Modified: 23 April 2026
+
+Description:
+This file defines the visual styling and layout of the Lost &
+Found system user interface. It includes styles for navigation,
+forms, item cards, messaging interface, dashboard components
+and responsive design to ensure usability across different
+devices and screen sizes.
+
+Version: 1.0
+
+GitHub Repository:
+https://github.com/bhagyashriiir/lost-and-found-frontend
+
+Modifications:
+-------------------------------------------------------------
+20/01/2026  Bhagyashri Roopesh   Created base styling layout
+28/01/2026  Bhagyashri Roopesh   Added form and button styles
+18/02/2026  Bhagyashri Roopesh   Implemented item card design
+20/03/2026  Bhagyashri Roopesh   Added messaging interface styling
+10/04/2026  Bhagyashri Roopesh   Improved responsive design
+23/04/2026  Bhagyashri Roopesh   Final UI styling adjustments
+=============================================================
+*/
+
 :root {
   --bg-main: #f7f7f7;
   --bg-soft: #ffffff;

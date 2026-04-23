@@ -1,3 +1,40 @@
+/*
+=============================================================
+Project: Lost & Found Web Application
+Module: CST3990 Undergraduate Individual Project
+File Name: script.js
+
+Author: Bhagyashri Roopesh
+Student ID: M00975809
+University: Middlesex University Dubai
+
+Date Created: 20 January 2026
+Last Modified: 23 April 2026
+
+Description:
+This file contains the main frontend logic for the Lost & Found
+system. It handles user interactions, API communication,
+real-time updates using Socket.IO, report submission,
+secure messaging, notifications, dashboard management,
+map visualization and Google authentication integration.
+
+Version: 1.0
+
+GitHub Repository:
+https://github.com/bhagyashriiir/lost-and-found-frontend
+
+Modifications:
+-------------------------------------------------------------
+20/01/2026  Bhagyashri Roopesh   Created initial frontend logic
+02/02/2026  Bhagyashri Roopesh   Implemented item loading and filters
+18/02/2026  Bhagyashri Roopesh   Added lost and found report submission
+12/03/2026  Bhagyashri Roopesh   Integrated secure messaging system
+25/03/2026  Bhagyashri Roopesh   Added real-time notifications using Socket.IO
+10/04/2026  Bhagyashri Roopesh   Implemented dashboard and profile features
+23/04/2026  Bhagyashri Roopesh   Final testing and bug fixes
+=============================================================
+*/
+
 // Base API URL pointing to the deployed backend server on Render
 const API_BASE_URL =
   "https://lost-and-found-backend-rsuq.onrender.com/api";
